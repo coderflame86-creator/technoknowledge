@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "quote": "My 7 year old has done 2 coding courses and loved it. He still wants to do more. The instructor is exceptional.",
+      "name": "Aisha Basit",
+      "role": "Parent"
+    },
+    {
+      "quote": "My son joined their basic and advanced coding courses. He learnt a lot and is now able to code games himself.",
+      "name": "Khurram Ansari",
+      "role": "Parent"
+    },
+    {
+      "quote": "My daughter, who is 6, had a junior coding camp with Technoknowledge. She learnt logic, algorithms and coding basics.",
+      "name": "Sana Naveen Awan",
+      "role": "Parent"
+    },
+    {
+      "quote": "TODO: principal testimonial",
+      "name": "TODO",
+      "role": "Principal, TODO school"
+    }
+  ]
+}

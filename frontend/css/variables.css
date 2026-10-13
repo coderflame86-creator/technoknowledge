@@ -1,0 +1,86 @@
+/* =========================================================
+   Technoknowledge: design tokens
+   Change colours, fonts and sizes HERE ONLY.
+   Every other CSS file uses these variables.
+   ========================================================= */
+:root {
+  /* ---- brand colours (taken from the logo) ---- */
+  --navy: #13294B;          /* main brand / headings / footer */
+  --navy-dark: #0E1E38;     /* top bar, hover on navy */
+  --navy-soft: #E8EDF5;     /* light navy tint for backgrounds */
+  --yellow: #FFD400;        /* logo yellow: primary buttons, highlights */
+  --yellow-hover: #FFE14D;
+  --yellow-soft: #FFF6CC;
+  --blue: #1F6CB0;          /* logo "KNOWLEDGE" blue: links */
+  --sky: #009FE3;           /* logo "TECHNO" blue: accents */
+  --sky-soft: #E2F4FC;
+  --orange: #FA4F01;        /* logo ring orange: small accents only */
+  --orange-soft: #FFECE3;
+  --green: #2E8B57;         /* success, robotics accents */
+  --green-soft: #E3F3EA;
+  --red: #C8321F;           /* form errors */
+  --red-soft: #FCEBE8;
+  --whatsapp: #1FA855;
+
+  /* ---- neutrals ---- */
+  --text: #1B1F2A;
+  --text-muted: #4A5263;
+  --text-soft: #6B7385;
+  --bg: #FFFFFF;
+  --bg-soft: #F6F7FA;
+  --border: #E3E7EF;
+  --border-strong: #CDD4E0;
+
+  /* ---- type (Google Fonts: Sora + Nunito Sans) ---- */
+  --font-heading: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /* fluid type scale (mobile → desktop) */
+  --fs-xs: 0.8125rem;                                   /* 13px */
+  --fs-sm: 0.9375rem;                                   /* 15px */
+  --fs-base: 1.0625rem;                                 /* 17px */
+  --fs-lg: 1.1875rem;                                   /* 19px */
+  --fs-h4: 1.1875rem;
+  --fs-h3: clamp(1.3125rem, 1.15rem + 0.6vw, 1.5625rem);
+  --fs-h2: clamp(1.75rem, 1.35rem + 1.5vw, 2.5rem);
+  --fs-h1: clamp(2.125rem, 1.5rem + 2.6vw, 3.5rem);
+
+  /* ---- spacing ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --section-space: clamp(56px, 3rem + 4vw, 104px);
+
+  /* ---- layout ---- */
+  --container: 1240px;
+  --gutter: 20px;
+  --header-h: 72px;
+
+  /* ---- shape & depth ---- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-btn: 10px;     /* buttons */
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(19, 41, 75, 0.06), 0 1px 3px rgba(19, 41, 75, 0.08);
+  --shadow-md: 0 6px 18px rgba(19, 41, 75, 0.08), 0 2px 6px rgba(19, 41, 75, 0.05);
+  --shadow-lg: 0 22px 48px rgba(19, 41, 75, 0.14), 0 6px 14px rgba(19, 41, 75, 0.06);
+  --focus-ring: 0 0 0 3px var(--bg), 0 0 0 5px var(--blue);
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 150ms;
+  --t-med: 260ms;
+}
+
+@media (min-width: 640px) {
+  :root { --gutter: 28px; }
+}
+@media (min-width: 1100px) {
+  :root { --gutter: 32px; --header-h: 80px; }
+}

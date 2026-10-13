@@ -1,0 +1,109 @@
+{
+  "format": {
+    "mode": "Live online",
+    "oneToOne": {
+      "availability": "All year",
+      "price": "21,999 per course"
+    },
+    "group": {
+      "availability": "Term breaks only (summer & winter)",
+      "price": "12,999 per course"
+    },
+    "outlines": "Shared on request",
+    "prerequisite": "None",
+    "requirements": [
+      "Laptop",
+      "Camera and mic",
+      "Good internet connection"
+    ]
+  },
+  "ageGroups": [
+    {
+      "ages": "6-8",
+      "courses": [
+        {
+          "name": "Algorithm Designing",
+          "summary": "Break a problem into small steps and put them in order."
+        },
+        {
+          "name": "Logic Building",
+          "summary": "Puzzles and games that build 'if this, then that' thinking."
+        },
+        {
+          "name": "Scratch Jr",
+          "summary": "Drag-and-drop coding for animated stories and simple games."
+        },
+        {
+          "name": "Canva",
+          "summary": "Design cards, posters and stories."
+        }
+      ]
+    },
+    {
+      "ages": "9-12",
+      "courses": [
+        {
+          "name": "Computational Thinking",
+          "summary": "Solve problems like a programmer."
+        },
+        {
+          "name": "Scratch",
+          "summary": "Code games, animations and interactive stories."
+        },
+        {
+          "name": "Canva",
+          "summary": "Posters, presentations and social posts."
+        },
+        {
+          "name": "Python",
+          "summary": "First real code: drawings, quizzes and mini-games."
+        },
+        {
+          "name": "Java",
+          "summary": "Building blocks of a language used in apps and games."
+        },
+        {
+          "name": "App Development",
+          "summary": "Working mobile apps with MIT App Inventor."
+        },
+        {
+          "name": "Generative AI",
+          "summary": "Create with AI tools, safely and responsibly."
+        }
+      ]
+    },
+    {
+      "ages": "12+",
+      "courses": [
+        {
+          "name": "Python",
+          "summary": "From basics to small programs and games."
+        },
+        {
+          "name": "Java",
+          "summary": "Object-based programming used in real software."
+        },
+        {
+          "name": "Web Development",
+          "summary": "Design and build a website with HTML and CSS."
+        },
+        {
+          "name": "Graphics Designing",
+          "summary": "Logos, posters and social media designs."
+        },
+        {
+          "name": "App Development",
+          "summary": "Complete mobile apps with MIT App Inventor."
+        },
+        {
+          "name": "Generative AI",
+          "summary": "Write, design and build with AI."
+        },
+        {
+          "name": "Agentic AI",
+          "summary": "Simple AI agents that plan and complete tasks."
+        }
+      ]
+    }
+  ]
+}

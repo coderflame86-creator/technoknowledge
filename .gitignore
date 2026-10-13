@@ -1,0 +1,21 @@
+# secrets
+.env
+backend/.env
+
+# dependencies
+node_modules/
+vendor/
+
+# logs and OS files
+*.log
+*.sqlite
+*.db
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+
+# build output
+dist/

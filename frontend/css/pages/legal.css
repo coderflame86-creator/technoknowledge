@@ -1,0 +1,19 @@
+/* =========================================================
+   Technoknowledge: legal.css  (privacy policy)
+   Builds on blog.css (post header, table of contents, prose)
+   ========================================================= */
+.legal-hero { align-items: start; }
+.legal-summary { padding: 24px 26px; border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14); }
+.legal-summary h2 { color: #fff; font-size: var(--fs-h4); }
+.legal-summary ul { list-style: none; padding: 0; margin-top: 14px; display: grid; gap: 10px; }
+.legal-summary li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; color: #DCE3EE; font-size: var(--fs-sm); line-height: 1.5; }
+.legal-summary li span { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--navy); margin-top: 1px; }
+.legal-summary svg { width: 14px; height: 14px; }
+
+.legal .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-md); }
+.legal table { width: 100%; border-collapse: collapse; font-size: 0.97rem; line-height: 1.6; }
+.legal th, .legal td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+.legal th { background: var(--bg-soft); color: var(--navy); font-family: var(--font-heading); font-size: var(--fs-sm); }
+.legal tr:last-child td { border-bottom: 0; }
+.legal td:first-child { width: 34%; font-weight: 700; color: var(--navy); }
+@media (max-width: 639px) { .legal td:first-child { white-space: normal; } }

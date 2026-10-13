@@ -1,0 +1,234 @@
+{
+  "name": "Technoknowledge (SMC-Pvt) Ltd.",
+  "tagline": "Creating Technology Producers",
+  "founded": "2021-01",
+  "contact": {
+    "phone": "+92 322 2055185",
+    "whatsapp": "+92 345 8205013",
+    "whatsappLink": "https://wa.me/923458205013",
+    "email": "info@thetechnoknowledge.com",
+    "address": "Phase 6, DHA, Karachi, Pakistan",
+    "officeHours": "Monday to Saturday, 9:00 am – 5:00 pm"
+  },
+  "figures": {
+    "studentsTrained": "50,000+",
+    "teachersTrained": "5,000+",
+    "schoolsReached": "50+",
+    "regions": [
+      "Federal",
+      "Punjab",
+      "Sindh",
+      "Khyber Pakhtunkhwa",
+      "Gilgit-Baltistan"
+    ]
+  },
+  "awards": [
+    "Best Women-led Startup, National Incubation Center (NIC) Islamabad",
+    "STEM.org accredited curriculum",
+    "Contributor, Single National Curriculum (Computer Science, Grades 6-8)",
+    "3rd place, USPWC-PakLaunch Women Accelerator Cohort-1"
+  ],
+  "governmentPartners": [
+    "Federal Directorate of Education (FDE)",
+    "Sindh Education Foundation (SEF)",
+    "Ministry of Education, Gilgit-Baltistan",
+    "Ministry of Federal Education & Professional Training (MoFEPT)"
+  ],
+  "regionalPartners": [
+    {
+      "name": "IdeoMetriX",
+      "region": "Gilgit-Baltistan",
+      "role": "Business partner"
+    },
+    {
+      "name": "Max-Academia",
+      "region": "Punjab",
+      "role": "Business partner"
+    }
+  ],
+  "social": {
+    "facebook": "https://www.facebook.com/TechnoKnowledge4",
+    "instagram": "https://www.instagram.com/technoknowledg4/",
+    "x": "https://twitter.com/technoknowledg4",
+    "youtube": "https://www.youtube.com/@TechnoKnowledge4",
+    "linkedin": "https://www.linkedin.com/company/thetechnoknowledge/"
+  },
+  "lms": "https://lms.thetechnoknowledge.com/",
+  "team": [
+    {
+      "name": "Romana Rafi",
+      "title": "Founding member & CTO",
+      "notes": "Electronic engineer, 10+ years in education, STEM-certified trainer"
+    },
+    {
+      "name": "Tanvir Maqsood",
+      "title": "Founding member & COO, South Lead, Pakistan",
+      "notes": "Computer software engineer, 8 years in IT, STEM-certified trainer"
+    },
+    {
+      "name": "Mohsin Amir",
+      "title": "Creative Director & Master Trainer, North Lead, Pakistan",
+      "notes": "CS graduate, 7+ years industry; founder of IdeoMetriX and Step Up Ademia"
+    },
+    {
+      "name": "Dr. Rafi us Shan",
+      "title": "Curriculum Lead & Advisor",
+      "notes": "PhD in Computer Science, 18+ years teaching and training"
+    },
+    {
+      "name": "Hira Gul",
+      "title": "Curriculum Specialist, North Lead, Pakistan",
+      "notes": "Software engineer"
+    },
+    {
+      "name": "Syed Ali Waqar",
+      "title": "Financial Advisor"
+    },
+    {
+      "name": "Zuha Shan",
+      "title": "Scratch & Canva Trainer"
+    }
+  ],
+  "clients": {
+    "source": "thetechnoknowledge.com (home page logos and /projects-and-collaborations/), Oct 2026",
+    "withLogos": [
+      {
+        "name": "Federal Directorate of Education",
+        "place": "Islamabad",
+        "type": "Government",
+        "logo": "assets/images/partners/logos/fde.webp"
+      },
+      {
+        "name": "Ministry of Federal Education & Professional Training",
+        "place": "Islamabad",
+        "type": "Government",
+        "logo": "assets/images/partners/logos/mofept.webp"
+      },
+      {
+        "name": "Ministry of Education, Gilgit-Baltistan",
+        "place": "Gilgit-Baltistan",
+        "type": "Government",
+        "logo": "assets/images/partners/logos/gb-ministry-of-education.webp"
+      },
+      {
+        "name": "Sindh Education Foundation",
+        "place": "Karachi",
+        "type": "Government",
+        "logo": "assets/images/partners/logos/sef.webp"
+      },
+      {
+        "name": "DIL – Developments in Literacy",
+        "place": "20 schools",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/dil.webp"
+      },
+      {
+        "name": "Zindagi Trust",
+        "place": "Karachi",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/zindagi-trust.webp"
+      },
+      {
+        "name": "Rupani Foundation",
+        "place": "Gilgit",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/rupani-foundation.webp"
+      },
+      {
+        "name": "Mehnaz Fatima Foundation",
+        "place": "Gilgit",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/mehnaz-fatima-foundation.webp"
+      },
+      {
+        "name": "Al-Firdous Welfare Association",
+        "place": "Bhara Kau, Islamabad",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/al-firdous-welfare-association.webp"
+      },
+      {
+        "name": "Saifiyah Girls Talim Trust",
+        "place": "Karachi",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/saifiyah-girls-talim-trust.webp"
+      },
+      {
+        "name": "Sanjan Nagar Public Education Trust",
+        "place": "Lahore",
+        "type": "NGO / trust",
+        "logo": "assets/images/partners/logos/sanjan-nagar-education-trust.webp"
+      },
+      {
+        "name": "Karachi Public School",
+        "place": "15 branches",
+        "type": "School",
+        "logo": "assets/images/partners/logos/karachi-public-school.webp"
+      },
+      {
+        "name": "Bay View Academy",
+        "place": "Karachi",
+        "type": "School",
+        "logo": "assets/images/partners/logos/bay-view-academy.webp"
+      },
+      {
+        "name": "Badri High School",
+        "place": "Karachi",
+        "type": "School",
+        "logo": "assets/images/partners/logos/badri-high-school.webp"
+      },
+      {
+        "name": "The CAS School",
+        "place": "Karachi",
+        "type": "School",
+        "logo": "assets/images/partners/logos/the-cas-school.webp"
+      },
+      {
+        "name": "Silver Oaks Schools & Colleges",
+        "place": "Rawalpindi",
+        "type": "School",
+        "logo": "assets/images/partners/logos/silver-oaks.webp"
+      },
+      {
+        "name": "Tameer-e-Nau Public School & College",
+        "place": "Mansehra",
+        "type": "School",
+        "logo": "assets/images/partners/logos/tameer-e-nau.webp"
+      },
+      {
+        "name": "Army Burn Hall College for Girls",
+        "place": "Abbottabad",
+        "type": "School",
+        "logo": "assets/images/partners/logos/army-burn-hall-college.webp"
+      },
+      {
+        "name": "Farabi Foundation School",
+        "place": "Dina, Jhelum",
+        "type": "School",
+        "logo": "assets/images/partners/logos/farabi-foundation-school.webp"
+      },
+      {
+        "name": "AIR Foundation School System",
+        "place": "",
+        "type": "School",
+        "logo": "assets/images/partners/logos/air-foundation-school-system.webp"
+      },
+      {
+        "name": "Ali Ali School",
+        "place": "Gilgit",
+        "type": "School",
+        "logo": "assets/images/partners/logos/ali-ali-school.webp"
+      },
+      {
+        "name": "Exceed Academy",
+        "place": "Gilgit",
+        "type": "School",
+        "logo": "assets/images/partners/logos/exceed-academy.webp"
+      }
+    ],
+    "textOnly": [
+      "Saifiyah Boys High School",
+      "Ibn Sina Boys",
+      "Cambridge School Lala Musa"
+    ]
+  }
+}

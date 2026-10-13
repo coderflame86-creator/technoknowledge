@@ -1,0 +1,122 @@
+{
+  "note": "Prices in PKR, per teacher, excluding provincial tax.",
+  "programs": [
+    {
+      "id": "itec",
+      "name": "ITEC: Information & Technology Enhanced Curriculum",
+      "grades": "1-8",
+      "includes": [
+        "Bit-by-Bit books",
+        "LMS",
+        "Teacher training",
+        "Monitoring & evaluation"
+      ],
+      "tools": [
+        "Scratch Jr",
+        "Scratch",
+        "Code.org",
+        "MIT App Inventor",
+        "HTML",
+        "Python"
+      ],
+      "training": {
+        "hours": 40,
+        "inPerson": 24,
+        "online": 16,
+        "pricePerTeacher": "25,000"
+      },
+      "curriculumPrice": "Custom quote",
+      "studentSubscription": {
+        "what": "Digitized ITEC curriculum on the LMS for students",
+        "includes": [
+          "Digitized curriculum",
+          "Interactive assessments",
+          "Assignments",
+          "Real-time results",
+          "Student profiling"
+        ],
+        "terms": [
+          "Monthly",
+          "Annual"
+        ],
+        "price": "Quote per student"
+      }
+    },
+    {
+      "id": "aitep",
+      "name": "AI Curriculum & AITEP (AI-Driven Academic Transformation Program)",
+      "curriculum": "Modular Generative AI curriculum",
+      "training": {
+        "hours": 20,
+        "pricePerTeacher": "25,000-30,000"
+      },
+      "freeStarter": {
+        "hours": 3,
+        "mode": "Online (Zoom)"
+      },
+      "tools": [
+        "ChatGPT",
+        "Gemini",
+        "Microsoft Copilot",
+        "Claude",
+        "Canva AI"
+      ]
+    },
+    {
+      "id": "robotics",
+      "name": "Robotics & IoT",
+      "grades": {
+        "1-5": "VEX Robotics-based curriculum",
+        "6-8": "Arduino-based curriculum"
+      },
+      "training": {
+        "hours": 40,
+        "pricePerTeacher": "35,000",
+        "hardware": "Purchased separately by the school"
+      },
+      "curriculumPrice": "Custom quote",
+      "projects": {
+        "Grade 6": [
+          "Spider Bot",
+          "Li-Fi Data Transmission",
+          "Smoke Detector",
+          "Automatic Hand Wash",
+          "Automatic Plant Watering System"
+        ],
+        "Grade 7": [
+          "Smart Blind Stick",
+          "Smart Traffic Light",
+          "Ultrasonic Radar",
+          "Automatic Parking & Barricade System",
+          "Automatic Street Lights"
+        ],
+        "Grade 8": [
+          "Smart Dustbin",
+          "Anti-Sleep Alarm for Drivers",
+          "Obstacle-Avoiding Robot",
+          "Bidirectional Counter",
+          "Line-Following Robot"
+        ],
+        "note": "Network Jammer is never shown on the website."
+      }
+    },
+    {
+      "id": "mne",
+      "name": "Monitoring & Evaluation",
+      "plans": [
+        "Quarterly",
+        "Bi-annual",
+        "Annual"
+      ],
+      "process": [
+        "Pre-assessment",
+        "School visits",
+        "Interviews (teachers, students, admin)",
+        "Modular assessments",
+        "Post-assessment",
+        "Report & recommendations"
+      ],
+      "price": "Custom quote"
+    }
+  ]
+}

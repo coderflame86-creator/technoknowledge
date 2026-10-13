@@ -1,0 +1,100 @@
+{
+  "main": [
+    {
+      "label": "For Schools",
+      "children": [
+        {
+          "label": "ITEC Curriculum & Training",
+          "href": "pages/itec-curriculum.html",
+          "desc": "Full-year coding-based computer science curriculum for Grades 1-8, with books, LMS and teachers' training"
+        },
+        {
+          "label": "AI Curriculum & AITEP",
+          "href": "pages/aitep.html",
+          "desc": "Modular Generative AI curriculum and teachers' training"
+        },
+        {
+          "label": "Robotics & IoT Curriculum & Training",
+          "href": "pages/robotics-iot.html",
+          "desc": "VEX Robotics-based curriculum (Grades 1-5), Arduino-based curriculum (Grades 6-8) and teachers' training"
+        },
+        {
+          "label": "Monitoring & Evaluation",
+          "href": "pages/monitoring-evaluation.html",
+          "desc": "Assessments, school visits and progress reports"
+        },
+        {
+          "label": "Books",
+          "href": "pages/books.html",
+          "desc": "Bit-by-Bit computer science books for Grades 1-8"
+        },
+        {
+          "label": "LMS",
+          "href": "pages/lms.html",
+          "desc": "Digital learning platform with teacher, student and admin portals"
+        }
+      ]
+    },
+    {
+      "label": "For Students",
+      "children": [
+        {
+          "label": "Techno Camps",
+          "href": "pages/techno-camps.html",
+          "desc": "Online summer & winter camps: Scratch, Programming and Generative AI"
+        },
+        {
+          "label": "Register Now",
+          "href": "pages/techno-camps.html#register",
+          "desc": "Book a seat in the next camp"
+        }
+      ]
+    },
+    {
+      "label": "Impact",
+      "children": [
+        {
+          "label": "Achievements",
+          "href": "pages/impact.html#achievements"
+        },
+        {
+          "label": "Student Projects",
+          "href": "pages/impact.html#projects"
+        },
+        {
+          "label": "Partners & Projects",
+          "href": "pages/impact.html#partners"
+        }
+      ]
+    },
+    {
+      "label": "About",
+      "children": [
+        {
+          "label": "Our Story",
+          "href": "pages/about.html#story"
+        },
+        {
+          "label": "Our Team",
+          "href": "pages/about.html#team"
+        },
+        {
+          "label": "Regional Partners",
+          "href": "pages/about.html#partners"
+        },
+        {
+          "label": "Contact Us",
+          "href": "pages/contact.html"
+        }
+      ]
+    },
+    {
+      "label": "Blog",
+      "href": "pages/blog.html"
+    }
+  ],
+  "cta": {
+    "label": "Request a proposal",
+    "href": "pages/request-proposal.html"
+  }
+}

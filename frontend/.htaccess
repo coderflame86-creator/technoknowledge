@@ -1,0 +1,130 @@
+# =========================================================
+# Technoknowledge website: server settings for Hostinger
+# (Apache / LiteSpeed). Upload this file to the website root
+# together with index.html. File name must be exactly: .htaccess
+# Built by fontwork/mk_htaccess.py from docs/redirect-map.txt
+# =========================================================
+
+Options -Indexes
+DirectoryIndex index.html
+
+# Missing pages show our friendly 404 page (with a real 404 status for Google)
+ErrorDocument 404 /404.html
+ErrorDocument 410 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1. One address only: https and no "www" (matches the canonical tags)
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://thetechnoknowledge.com%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://thetechnoknowledge.com%{REQUEST_URI} [R=301,L]
+
+# 2. /pages/ (folder) -> home page. (/index.html is left alone: the canonical tag already points Google to /)
+RewriteRule ^pages/?$ / [R=301,L]
+
+# 3. Old WordPress addresses -> new pages (keeps Google rankings)
+RewriteRule ^home/?$ / [R=301,L,NC]
+RewriteRule ^about/?$ /pages/about.html [R=301,L,NC]
+RewriteRule ^about-us/?$ /pages/about.html [R=301,L,NC]
+RewriteRule ^contact/?$ /pages/contact.html [R=301,L,NC]
+RewriteRule ^contact-us/?$ /pages/contact.html [R=301,L,NC]
+RewriteRule ^blog/?$ /pages/blog.html [R=301,L,NC]
+RewriteRule ^techno-camps/?$ /pages/techno-camps.html [R=301,L,NC]
+RewriteRule ^coding-camps-for-kids/?$ /pages/techno-camps.html [R=301,L,NC]
+RewriteRule ^school-bootcamps/?$ /pages/techno-camps.html [R=301,L,NC]
+RewriteRule ^robotics-camp/?$ /pages/techno-camps.html [R=301,L,NC]
+RewriteRule ^registration/?$ /pages/techno-camps.html [R=301,L,NC]
+RewriteRule ^early-age-curriculum/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^digitized-curriculum/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^itec-curriculum/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^teacher-training/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^train-the-trainer/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^facilitate-lab-set-up/?$ /pages/itec-curriculum.html [R=301,L,NC]
+RewriteRule ^aitep/?$ /pages/aitep.html [R=301,L,NC]
+RewriteRule ^aitep-ai-training-for-teachers/?$ /pages/aitep.html [R=301,L,NC]
+RewriteRule ^robotics-iot-for-schools/?$ /pages/robotics-iot.html [R=301,L,NC]
+RewriteRule ^robotics/?$ /pages/robotics-iot.html [R=301,L,NC]
+RewriteRule ^teacher-training-2/?$ /pages/monitoring-evaluation.html [R=301,L,NC]
+RewriteRule ^monitoring-and-evaluation/?$ /pages/monitoring-evaluation.html [R=301,L,NC]
+RewriteRule ^books/?$ /pages/books.html [R=301,L,NC]
+RewriteRule ^lms/?$ /pages/lms.html [R=301,L,NC]
+RewriteRule ^projects-and-collaborations/?$ /pages/impact.html [R=301,L,NC]
+RewriteRule ^impact/?$ /pages/impact.html [R=301,L,NC]
+RewriteRule ^school-registration/?$ /pages/request-proposal.html [R=301,L,NC]
+RewriteRule ^request-a-proposal/?$ /pages/request-proposal.html [R=301,L,NC]
+RewriteRule ^privacy-policy/?$ /pages/privacy-policy.html [R=301,L,NC]
+RewriteRule ^school-programs/?$ / [R=301,L,NC]
+RewriteRule ^services/?$ / [R=301,L,NC]
+RewriteRule ^for-schools/?$ / [R=301,L,NC]
+RewriteRule ^jobs-of-the-next-decade-in-the-era-of-ai/?$ /pages/blog/jobs-of-the-next-decade-in-the-era-of-ai.html [R=301,L,NC]
+RewriteRule ^teach-coding-to-kids/?$ /pages/blog/teach-coding-to-kids.html [R=301,L,NC]
+RewriteRule ^coding-from-zero-level/?$ /pages/blog/coding-from-zero-level.html [R=301,L,NC]
+RewriteRule ^how-to-make-a-game-without-coding/?$ /pages/blog/how-to-make-a-game-without-coding.html [R=301,L,NC]
+RewriteRule ^coding-and-programming/?$ /pages/blog/coding-and-programming.html [R=301,L,NC]
+RewriteRule ^how-to-start-coding-for-kids/?$ /pages/blog/how-to-start-coding-for-kids.html [R=301,L,NC]
+RewriteRule ^how-to-do-coding-in-a-laptop-for-kids/?$ /pages/blog/how-to-do-coding-in-a-laptop-for-kids.html [R=301,L,NC]
+RewriteRule ^coding-apps-for-kids/?$ /pages/blog/coding-apps-for-kids.html [R=301,L,NC]
+RewriteRule ^10-html-css-projects-for-beginners/?$ /pages/blog/10-html-css-projects-for-beginners.html [R=301,L,NC]
+RewriteRule ^graphic-design-for-kids/?$ /pages/blog/graphic-design-for-kids.html [R=301,L,NC]
+RewriteRule ^games-to-learn-python/?$ /pages/blog/games-to-learn-python.html [R=301,L,NC]
+RewriteRule ^computer-science-for-kids/?$ /pages/blog/computer-science-for-kids.html [R=301,L,NC]
+RewriteRule ^best-games-of-scratch-for-kids/?$ /pages/blog/best-games-of-scratch-for-kids.html [R=301,L,NC]
+RewriteRule ^coding-bootcamp-for-kids/?$ /pages/blog/coding-bootcamp-for-kids.html [R=301,L,NC]
+RewriteRule ^why-coding-is-good-investment-for-child/?$ /pages/blog/why-coding-is-good-investment-for-child.html [R=301,L,NC]
+RewriteRule ^10-designer-buys-that-are-worth-the-investment/?$ /pages/blog/block-programming-for-kids.html [R=301,L,NC]
+RewriteRule ^our-pick-of-the-coolest-denim-jackets-this-season/?$ /pages/blog/block-programming-tools.html [R=301,L,NC]
+RewriteRule ^jay-ellis-proves-one-suit-can-work-four-different-ways/?$ /pages/blog/teaching-programming-early-years.html [R=301,L,NC]
+
+# Old WordPress / Yoast sitemaps -> the new sitemap
+RewriteRule ^(wp-sitemap.*|sitemap_index|page-sitemap|post-sitemap|category-sitemap)\.xml$ /sitemap.xml [R=301,L,NC]
+
+# 4. Old WordPress links like /?p=123 or /?page_id=45 -> home page
+RewriteCond %{QUERY_STRING} (^|&)(p|page_id|cat|tag|s)=
+RewriteRule ^$ /? [R=301,L]
+
+# 5. WordPress system, shop and archive addresses no longer exist: tell Google "gone" (410)
+RewriteRule ^(wp-admin|wp-includes|wp-content|wp-json|wp-login\.php|xmlrpc\.php)(/.*)?$ - [G,L]
+RewriteRule ^(feed|comments/feed|cart|checkout|my-account|shop|product|product-category|product-tag|author|category|tag|page)(/.*)?$ - [G,L]
+RewriteRule ^.+/feed/?$ - [G,L]
+</IfModule>
+
+# ---------- speed: compression ----------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript application/json image/svg+xml application/xml text/xml text/plain
+</IfModule>
+
+# ---------- speed: browser caching ----------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 week"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType image/x-icon "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# ---------- security headers ----------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # Turn on after the site has run on https for a few weeks without problems:
+  # Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# Do not serve hidden or source files
+<FilesMatch "(^\.|\.(md|py|mjs|log|bak|sh)$)">
+  Require all denied
+</FilesMatch>

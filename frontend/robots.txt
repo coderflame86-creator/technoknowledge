@@ -1,0 +1,6 @@
+# Technoknowledge website
+User-agent: *
+Allow: /
+Disallow: /components/
+
+Sitemap: https://thetechnoknowledge.com/sitemap.xml
