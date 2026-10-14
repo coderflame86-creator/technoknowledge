@@ -21,10 +21,10 @@ const add = (file, path, priority) => {
 };
 add(join(FE, 'index.html'), '', '1.0');
 for (const f of readdirSync(join(FE, 'pages')).sort())
-  if (f.endsWith('.html') && !SKIP.has(f)) add(join(FE, 'pages', f), 'pages/' + f, '0.8');
+  if (f.endsWith('.html') && !SKIP.has(f)) add(join(FE, 'pages', f), f.replace(/\.html$/, ''), '0.8');
 const blog = join(FE, 'pages/blog');
 if (existsSync(blog)) for (const f of readdirSync(blog).sort())
-  if (f.endsWith('.html')) add(join(blog, f), 'pages/blog/' + f, '0.6');
+  if (f.endsWith('.html')) add(join(blog, f), 'blog/' + f.replace(/\.html$/, ''), '0.6');
 
 const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(u => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority></url>`).join('\n') +

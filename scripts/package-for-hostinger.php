@@ -18,7 +18,19 @@ if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
     die("Failed to create ZIP file.\n");
 }
 
-// 1. Add all frontend files to root of ZIP
+// 1. Add root server files
+if (file_exists($root . '/.htaccess')) {
+    $zip->addFile($root . '/.htaccess', '.htaccess');
+}
+if (file_exists($root . '/index.php')) {
+    $zip->addFile($root . '/index.php', 'index.php');
+}
+if (file_exists($root . '/blog/index.php')) {
+    $zip->addFile($root . '/blog/index.php', 'blog/index.php');
+}
+echo "- Added root .htaccess, index.php, and blog/index.php\n";
+
+// 2. Add all frontend files
 $frontendDir = $root . '/frontend';
 $files = new RecursiveIteratorIterator(
     new RecursiveDirectoryIterator($frontendDir, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -27,7 +39,7 @@ $files = new RecursiveIteratorIterator(
 
 foreach ($files as $file) {
     $filePath = $file->getRealPath();
-    $relativePath = substr($filePath, strlen($frontendDir) + 1);
+    $relativePath = 'frontend/' . substr($filePath, strlen($frontendDir) + 1);
     $relativePath = str_replace('\\', '/', $relativePath);
 
     if ($file->isDir()) {
