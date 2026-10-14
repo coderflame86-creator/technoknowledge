@@ -8,3 +8,4 @@
 </FilesMatch>
 
 Options -Indexes
+DirectoryIndex index.php
