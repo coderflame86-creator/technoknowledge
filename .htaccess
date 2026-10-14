@@ -38,23 +38,35 @@ RewriteRule ^(robots\.txt|sitemap\.xml|favicon\.ico|404\.html)$ frontend/$1 [L]
 # ---------------------------------------------------------
 # 4. REMOVE DIRECT /frontend/ OR /pages/ OR .html ACCESS (301)
 # ---------------------------------------------------------
-# Redirect /frontend/index.html or /index.html -> /
+# Only redirect initial external requests, never internal rewrites
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^frontend/index\.html$ / [R=301,L,NC]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^frontend/?$ / [R=301,L,NC]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^index\.html$ / [R=301,L,NC]
 
 # Redirect direct /pages/ or /frontend/pages/ for blog articles -> /blog/<slug>
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^(?:frontend/)?pages/blog/([^/]+?)(?:\.html)?$ /blog/$1 [R=301,L,NC]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^(?:frontend/)?pages/blog/?$ /blog [R=301,L,NC]
 
 # Redirect direct /pages/<page> or /frontend/pages/<page> -> /<page>
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^(?:frontend/)?pages/([^/]+?)(?:\.html)?$ /$1 [R=301,L,NC]
 
-# Strip .html from direct requests (e.g. /about.html -> /about)
+# Strip .html from direct requests (e.g. /about.html -> /about, /blog/post.html -> /blog/post)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/backend
+RewriteRule ^blog/([^/]+?)\.html$ /blog/$1 [R=301,L,NC]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_URI} !^/backend
 RewriteRule ^([^/]+?)\.html$ /$1 [R=301,L,NC]
 
 # Strip trailing slash from clean page URLs (e.g. /about/ -> /about)
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/backend
 RewriteRule ^(.+?)/+$ /$1 [R=301,L]
@@ -122,21 +134,21 @@ RewriteRule ^.+/feed/?$ - [G,L]
 # 6. INTERNAL CLEAN URL ROUTING (URL stays clean in browser)
 # ---------------------------------------------------------
 # Root -> frontend/index.html
-RewriteRule ^$ frontend/index.html [L]
+RewriteRule ^$ frontend/index.html [END]
 
 # Blog root: /blog or /blog/ -> frontend/pages/blog.html
-RewriteRule ^blog/?$ frontend/pages/blog.html [L,NC]
+RewriteRule ^blog/?$ frontend/pages/blog.html [END,NC]
 
 # Blog articles: /blog/<slug> -> frontend/pages/blog/<slug>.html
-RewriteRule ^blog/([^/]+)/?$ frontend/pages/blog/$1.html [L,NC]
+RewriteRule ^blog/([^/]+)/?$ frontend/pages/blog/$1.html [END,NC]
 
 # Known main pages -> frontend/pages/<page>.html
-RewriteRule ^(about|aitep|books|contact|impact|itec-curriculum|lms|monitoring-evaluation|privacy-policy|request-proposal|robotics-iot|techno-camps)/?$ frontend/pages/$1.html [L,NC]
-RewriteRule ^style-guide/?$ frontend/style-guide.html [L,NC]
+RewriteRule ^(about|aitep|books|contact|impact|itec-curriculum|lms|monitoring-evaluation|privacy-policy|request-proposal|robotics-iot|techno-camps)/?$ frontend/pages/$1.html [END,NC]
+RewriteRule ^style-guide/?$ frontend/style-guide.html [END,NC]
 
 # Generic fallback for any other .html page inside frontend/pages/
 RewriteCond %{DOCUMENT_ROOT}/frontend/pages/$1.html -f
-RewriteRule ^([^/]+)/?$ frontend/pages/$1.html [L]
+RewriteRule ^([^/]+)/?$ frontend/pages/$1.html [END]
 
 </IfModule>
 
