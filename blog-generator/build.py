@@ -27,9 +27,9 @@ CATS = {  # name: (slug, colour class, icon)
   'Digital creativity': ('digital-creativity', 'red', ic('<path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 4-4 4h-2a2 2 0 0 0-1.5 3.3A1.6 1.6 0 0 1 12 22z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16.5" cy="10.5" r="1"/>')),
 }
 ORDER = list(CATS)
-LINKS = {'camps': 'techno-camps.html', 'itec': 'itec-curriculum.html', 'books': 'books.html', 'lms': 'lms.html',
-         'aitep': 'aitep.html', 'robotics': 'robotics-iot.html', 'mne': 'monitoring-evaluation.html',
-         'proposal': 'request-proposal.html', 'contact': 'contact.html'}
+LINKS = {'camps': 'techno-camps', 'itec': 'itec-curriculum', 'books': 'books', 'lms': 'lms',
+         'aitep': 'aitep', 'robotics': 'robotics-iot', 'mne': 'monitoring-evaluation',
+         'proposal': 'request-proposal', 'contact': 'contact'}
 I_CLOCK = ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>')
 I_CAL = ic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>')
 I_WA = ic('<path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.2-1.8-1-1 .8a4 4 0 0 1-2.5-2.5l.8-1-1-1.8z"/>')
@@ -57,7 +57,7 @@ def fix_links(md, prefix):
         key = m.group(1)
         if key.startswith('post:'):
             s = key[5:]; assert s in by_slug, s
-            return '](%s%s.html)' % ('' if prefix == '../' else 'blog/', s)
+            return '](%s%s)' % ('' if prefix == '../' else 'blog/', s)
         return '](%s%s)' % (prefix, LINKS[key])
     return re.sub(r'\]\(TK:([a-z:0-9-]+)\)', rep, md)
 
@@ -101,16 +101,16 @@ for p in posts:
     rel = [q for q in posts if q is not p and q['cat'] == p['cat']][:3]
     rel += [q for q in posts if q is not p and q not in rel][:3 - len(rel)]
     relh = ''.join(
-        '<li class="bcard bcard--sm"><a class="bcard__link" href="%s.html">%s<div class="bcard__body"><p class="bcard__cat">%s</p><h3>%s</h3><p class="bcard__meta">%s min read</p></div></a></li>'
+        '<li class="bcard bcard--sm"><a class="bcard__link" href="%s">%s<div class="bcard__body"><p class="bcard__cat">%s</p><h3>%s</h3><p class="bcard__meta">%s min read</p></div></a></li>'
         % (q['slug'], cover(q), q['cat'], html.escape(q['title']), q['mins']) for q in rel)
     school = p['cat'] in ('For schools', 'For teachers')
     if p['cat'] == 'For teachers':
-        cta = ('Train your teachers with AITEP.', 'Start with a free 3-hour online Starter session for your staff.', '../aitep.html', 'Book a free Starter')
+        cta = ('Train your teachers with AITEP.', 'Start with a free 3-hour online Starter session for your staff.', '../aitep', 'Book a free Starter')
     elif school:
-        cta = ('Bring coding, AI and robotics to your school.', 'Tell us your grades and number of students. We reply within one working day.', '../request-proposal.html', 'Request a proposal')
+        cta = ('Bring coding, AI and robotics to your school.', 'Tell us your grades and number of students. We reply within one working day.', '../request-proposal', 'Request a proposal')
     else:
-        cta = ('Let your child build, not just play.', 'Live online Techno Camps for ages 6 to 12+: Scratch, Python, Canva, app development and Generative AI.', '../techno-camps.html', 'See Techno Camps')
-    url = '%s/pages/blog/%s.html' % (SITE, p['slug'])
+        cta = ('Let your child build, not just play.', 'Live online Techno Camps for ages 6 to 12+: Scratch, Python, Canva, app development and Generative AI.', '../techno-camps', 'See Techno Camps')
+    url = '%s/blog/%s' % (SITE, p['slug'])
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "BlogPosting", "headline": p['title'], "description": p['desc'], "datePublished": p['date'],
          "dateModified": p.get('updated') or (max(p['date'], '2026-10-04') if p['date'] < '2026-01-01' else p['date']),
@@ -120,7 +120,7 @@ for p in posts:
                        "logo": {"@type": "ImageObject", "url": SITE + "/assets/images/logos/tk-icon-512.png"}}},
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
-            {"@type": "ListItem", "position": 2, "name": "Blog", "item": SITE + "/pages/blog.html"},
+            {"@type": "ListItem", "position": 2, "name": "Blog", "item": SITE + "/blog"},
             {"@type": "ListItem", "position": 3, "name": p['title'], "item": url}]}]}
     share_txt = html.escape(p['title'] + ' ' + url)
     from urllib.parse import quote
@@ -147,7 +147,7 @@ counts = {c: sum(1 for p in posts if p['cat'] == c) for c in ORDER}
 chips = '<button class="topic" type="button" data-topic="all" aria-pressed="true">All <small>%d</small></button>' % len(posts)
 chips += ''.join('<button class="topic topic--%s" type="button" data-topic="%s" aria-pressed="false">%s <small>%d</small></button>' % (CATS[c][1], CATS[c][0], html.escape(c), counts[c]) for c in ORDER if counts[c])
 featured = by_slug['teaching-coding-ai-robotics-in-schools']
-feat = ('<a class="feature-post reveal" href="blog/%s.html">%s<div class="feature-post__body"><p class="bcard__cat">%s · New</p><h2>%s</h2><p>%s</p>'
+feat = ('<a class="feature-post reveal" href="blog/%s">%s<div class="feature-post__body"><p class="bcard__cat">%s · New</p><h2>%s</h2><p>%s</p>'
         '<p class="bcard__meta">%s %s · %s %s min read</p><span class="feature-post__more">Read the guide %s</span></div></a>') % (
     featured['slug'], cover(featured, ' pcover--feature'), featured['cat'], html.escape(featured['title']), html.escape(featured['desc']),
     I_CAL, fmt_date(featured['date']), I_CLOCK, featured['mins'], I_ARROW)
@@ -156,12 +156,12 @@ for i, p in enumerate(posts):
     slug, col, icon = CATS[p['cat']]
     text = (p['title'] + ' ' + p['desc'] + ' ' + p['cat']).lower()
     new = ' <span class="bcard__new">New</span>' if p['date'] >= '2026-01-01' else ''
-    cards += ('        <li class="bcard reveal" data-delay="%d" data-post data-cat="%s" data-text="%s"><a class="bcard__link" href="blog/%s.html">%s'
+    cards += ('        <li class="bcard reveal" data-delay="%d" data-post data-cat="%s" data-text="%s"><a class="bcard__link" href="blog/%s">%s'
               '<div class="bcard__body"><p class="bcard__cat">%s%s</p><h3>%s</h3><p class="bcard__desc">%s</p><p class="bcard__meta">%s · %s min read</p></div></a></li>\n') % (
         (i % 3) * 60, slug, html.escape(text, quote=True), p['slug'], cover(p), p['cat'], new, html.escape(p['title']), html.escape(p['desc']), ('Updated ' + fmt_date(p['updated'])) if p.get('updated') else fmt_date(p['date']), p['mins'])
-ld = {"@context": "https://schema.org", "@type": "Blog", "name": "Technoknowledge Blog", "url": SITE + "/pages/blog.html",
+ld = {"@context": "https://schema.org", "@type": "Blog", "name": "Technoknowledge Blog", "url": SITE + "/blog",
       "publisher": {"@type": "Organization", "name": "Technoknowledge (SMC-Pvt) Ltd.", "url": SITE + "/"},
-      "blogPost": [{"@type": "BlogPosting", "headline": p['title'], "datePublished": p['date'], "url": "%s/pages/blog/%s.html" % (SITE, p['slug'])} for p in posts]}
+      "blogPost": [{"@type": "BlogPosting", "headline": p['title'], "datePublished": p['date'], "url": "%s/blog/%s" % (SITE, p['slug'])} for p in posts]}
 t = LIST_TPL
 for k, v in {'LD': json.dumps(ld, indent=2, ensure_ascii=False), 'CHIPS': chips, 'FEATURED': feat, 'CARDS': cards, 'COUNT': str(len(posts)),
              'I_SEARCH': I_SEARCH, 'I_ARROW': I_ARROW}.items():
@@ -170,6 +170,6 @@ assert '@@' not in t, t[t.index('@@') - 40:t.index('@@') + 40]
 open(FE + '/pages/blog.html', 'w', encoding='utf8').write(t)
 
 # redirect map for go-live (old WordPress URL -> new page)
-rd = ['/%s/ -> /pages/blog/%s.html' % (p.get('old', p['slug']), p['slug']) for p in posts if p['date'] < '2026-01-01']
+rd = ['/%s/ -> /blog/%s' % (p.get('old', p['slug']), p['slug']) for p in posts if p['date'] < '2026-01-01']
 open(os.path.join(HERE, '..', 'docs', 'blog-redirects.txt'), 'w').write('\n'.join(rd) + '\n')
 print(len(posts), 'posts;', counts)

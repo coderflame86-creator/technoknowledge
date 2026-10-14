@@ -16,6 +16,7 @@ function stripComment($html) {
 }
 
 function render($partial, $root, $page) {
+    $partial = str_replace('{{root}}./', $root === '../' ? '../' : './', $partial);
     $html = str_replace('{{root}}', $root, stripComment($partial));
     // mark links for this page as current
     $html = str_replace("data-page=\"{$page}\"", "data-page=\"{$page}\" aria-current=\"page\"", $html);
@@ -48,29 +49,29 @@ function inject($file, $root, $pageName = null) {
     }
 }
 
-// 1. Home and root level pages
+// 1. Home and root level pages (URL: /)
 foreach (scandir($fe) as $f) {
     if (str_ends_with($f, '.html')) {
         inject($fe . '/' . $f, '');
     }
 }
 
-// 2. Inner pages in frontend/pages/
+// 2. Inner pages in frontend/pages/ (URL: /<page>)
 $pagesDir = $fe . '/pages';
 if (is_dir($pagesDir)) {
     foreach (scandir($pagesDir) as $f) {
         if (str_ends_with($f, '.html')) {
-            inject($pagesDir . '/' . $f, '../');
+            inject($pagesDir . '/' . $f, '');
         }
     }
 }
 
-// 3. Blog articles in frontend/pages/blog/
+// 3. Blog articles in frontend/pages/blog/ (URL: /blog/<slug>)
 $blogDir = $pagesDir . '/blog';
 if (is_dir($blogDir)) {
     foreach (scandir($blogDir) as $f) {
         if (str_ends_with($f, '.html')) {
-            inject($blogDir . '/' . $f, '../../', 'blog');
+            inject($blogDir . '/' . $f, '../', 'blog');
         }
     }
 }

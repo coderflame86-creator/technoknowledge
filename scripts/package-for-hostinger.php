@@ -25,10 +25,7 @@ if (file_exists($root . '/.htaccess')) {
 if (file_exists($root . '/index.php')) {
     $zip->addFile($root . '/index.php', 'index.php');
 }
-if (file_exists($root . '/blog/index.php')) {
-    $zip->addFile($root . '/blog/index.php', 'blog/index.php');
-}
-echo "- Added root .htaccess, index.php, and blog/index.php\n";
+echo "- Added root .htaccess and index.php\n";
 
 // 2. Add all frontend files
 $frontendDir = $root . '/frontend';

@@ -24,6 +24,10 @@ RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !=https
 RewriteRule ^ https://thetechnoknowledge.com%{REQUEST_URI} [R=301,L]
 
+# Detect base path prefix automatically (/ on domain root, /TK/ on localhost subfolder)
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
 # ---------------------------------------------------------
 # 2. BACKEND PASSTHROUGH (Admin portal, APIs, assets)
 # ---------------------------------------------------------
@@ -38,92 +42,92 @@ RewriteRule ^(robots\.txt|sitemap\.xml|favicon\.ico|404\.html)$ frontend/$1 [L]
 # ---------------------------------------------------------
 # 4. REMOVE DIRECT /frontend/ OR /pages/ OR .html ACCESS (301)
 # ---------------------------------------------------------
+# 4. REMOVE DIRECT /frontend/ OR /pages/ OR .html ACCESS (301)
+# ---------------------------------------------------------
 # Only redirect initial external requests, never internal rewrites
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^frontend/index\.html$ / [R=301,L,NC]
+RewriteRule ^frontend/index\.html$ %{ENV:BASE} [R=301,L,NC]
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^frontend/?$ / [R=301,L,NC]
+RewriteRule ^frontend/?$ %{ENV:BASE} [R=301,L,NC]
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^index\.html$ / [R=301,L,NC]
+RewriteRule ^index\.html$ %{ENV:BASE} [R=301,L,NC]
 
-# Redirect direct /pages/ or /frontend/pages/ for blog articles -> /blog/<slug>
+# Redirect direct /pages/ or /frontend/pages/ for blog articles -> blog/<slug>
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^(?:frontend/)?pages/blog/([^/]+?)(?:\.html)?$ /blog/$1 [R=301,L,NC]
+RewriteRule ^(?:frontend/)?pages/blog/([^/]+?)(?:\.html)?$ %{ENV:BASE}blog/$1 [R=301,L,NC]
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^(?:frontend/)?pages/blog/?$ /blog [R=301,L,NC]
+RewriteRule ^(?:frontend/)?pages/blog/?$ %{ENV:BASE}blog [R=301,L,NC]
 
-# Redirect direct /pages/<page> or /frontend/pages/<page> -> /<page>
+# Redirect direct /pages/<page> or /frontend/pages/<page> -> <page>
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^(?:frontend/)?pages/([^/]+?)(?:\.html)?$ /$1 [R=301,L,NC]
+RewriteRule ^(?:frontend/)?pages/([^/]+?)(?:\.html)?$ %{ENV:BASE}$1 [R=301,L,NC]
 
 # Strip .html from direct requests (e.g. /about.html -> /about, /blog/post.html -> /blog/post)
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_URI} !^/backend
-RewriteRule ^blog/([^/]+?)\.html$ /blog/$1 [R=301,L,NC]
-
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteCond %{REQUEST_URI} !^/backend
-RewriteRule ^([^/]+?)\.html$ /$1 [R=301,L,NC]
+RewriteCond %{REQUEST_URI} ^(.*)\.html$ [NC]
+RewriteRule ^.*\.html$ %1 [R=301,L]
 
 # Strip trailing slash from clean page URLs (e.g. /about/ -> /about)
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/backend
-RewriteRule ^(.+?)/+$ /$1 [R=301,L]
+RewriteCond %{REQUEST_URI} ^(.*?)/+$
+RewriteRule ^.+$ %1 [R=301,L]
 
 # ---------------------------------------------------------
 # 5. OLD WORDPRESS REDIRECTS -> NEW CLEAN SEO URLs (301)
 # ---------------------------------------------------------
-RewriteRule ^home/?$ / [R=301,L,NC]
-RewriteRule ^about-us/?$ /about [R=301,L,NC]
-RewriteRule ^contact-us/?$ /contact [R=301,L,NC]
-RewriteRule ^coding-camps-for-kids/?$ /techno-camps [R=301,L,NC]
-RewriteRule ^school-bootcamps/?$ /techno-camps [R=301,L,NC]
-RewriteRule ^robotics-camp/?$ /techno-camps [R=301,L,NC]
-RewriteRule ^registration/?$ /techno-camps [R=301,L,NC]
-RewriteRule ^early-age-curriculum/?$ /itec-curriculum [R=301,L,NC]
-RewriteRule ^digitized-curriculum/?$ /itec-curriculum [R=301,L,NC]
-RewriteRule ^teacher-training/?$ /itec-curriculum [R=301,L,NC]
-RewriteRule ^train-the-trainer/?$ /itec-curriculum [R=301,L,NC]
-RewriteRule ^facilitate-lab-set-up/?$ /itec-curriculum [R=301,L,NC]
-RewriteRule ^aitep-ai-training-for-teachers/?$ /aitep [R=301,L,NC]
-RewriteRule ^robotics-iot-for-schools/?$ /robotics-iot [R=301,L,NC]
-RewriteRule ^robotics/?$ /robotics-iot [R=301,L,NC]
-RewriteRule ^teacher-training-2/?$ /monitoring-evaluation [R=301,L,NC]
-RewriteRule ^monitoring-and-evaluation/?$ /monitoring-evaluation [R=301,L,NC]
-RewriteRule ^projects-and-collaborations/?$ /impact [R=301,L,NC]
-RewriteRule ^school-registration/?$ /request-proposal [R=301,L,NC]
-RewriteRule ^request-a-proposal/?$ /request-proposal [R=301,L,NC]
-RewriteRule ^school-programs/?$ / [R=301,L,NC]
-RewriteRule ^services/?$ / [R=301,L,NC]
-RewriteRule ^for-schools/?$ / [R=301,L,NC]
+RewriteRule ^home/?$ %{ENV:BASE} [R=301,L,NC]
+RewriteRule ^about-us/?$ %{ENV:BASE}about [R=301,L,NC]
+RewriteRule ^contact-us/?$ %{ENV:BASE}contact [R=301,L,NC]
+RewriteRule ^coding-camps-for-kids/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^school-bootcamps/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^robotics-camp/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^registration/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^early-age-curriculum/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
+RewriteRule ^digitized-curriculum/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
+RewriteRule ^teacher-training/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
+RewriteRule ^train-the-trainer/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
+RewriteRule ^facilitate-lab-set-up/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
+RewriteRule ^aitep-ai-training-for-teachers/?$ %{ENV:BASE}aitep [R=301,L,NC]
+RewriteRule ^robotics-iot-for-schools/?$ %{ENV:BASE}robotics-iot [R=301,L,NC]
+RewriteRule ^robotics/?$ %{ENV:BASE}robotics-iot [R=301,L,NC]
+RewriteRule ^teacher-training-2/?$ %{ENV:BASE}monitoring-evaluation [R=301,L,NC]
+RewriteRule ^monitoring-and-evaluation/?$ %{ENV:BASE}monitoring-evaluation [R=301,L,NC]
+RewriteRule ^projects-and-collaborations/?$ %{ENV:BASE}impact [R=301,L,NC]
+RewriteRule ^school-registration/?$ %{ENV:BASE}request-proposal [R=301,L,NC]
+RewriteRule ^request-a-proposal/?$ %{ENV:BASE}request-proposal [R=301,L,NC]
+RewriteRule ^school-programs/?$ %{ENV:BASE} [R=301,L,NC]
+RewriteRule ^services/?$ %{ENV:BASE} [R=301,L,NC]
+RewriteRule ^for-schools/?$ %{ENV:BASE} [R=301,L,NC]
 
 # WordPress blog post redirects -> clean blog SEO URLs
-RewriteRule ^jobs-of-the-next-decade-in-the-era-of-ai/?$ /blog/jobs-of-the-next-decade-in-the-era-of-ai [R=301,L,NC]
-RewriteRule ^teach-coding-to-kids/?$ /blog/teach-coding-to-kids [R=301,L,NC]
-RewriteRule ^coding-from-zero-level/?$ /blog/coding-from-zero-level [R=301,L,NC]
-RewriteRule ^how-to-make-a-game-without-coding/?$ /blog/how-to-make-a-game-without-coding [R=301,L,NC]
-RewriteRule ^coding-and-programming/?$ /blog/coding-and-programming [R=301,L,NC]
-RewriteRule ^how-to-start-coding-for-kids/?$ /blog/how-to-start-coding-for-kids [R=301,L,NC]
-RewriteRule ^how-to-do-coding-in-a-laptop-for-kids/?$ /blog/how-to-do-coding-in-a-laptop-for-kids [R=301,L,NC]
-RewriteRule ^coding-apps-for-kids/?$ /blog/coding-apps-for-kids [R=301,L,NC]
-RewriteRule ^10-html-css-projects-for-beginners/?$ /blog/10-html-css-projects-for-beginners [R=301,L,NC]
-RewriteRule ^graphic-design-for-kids/?$ /blog/graphic-design-for-kids [R=301,L,NC]
-RewriteRule ^games-to-learn-python/?$ /blog/games-to-learn-python [R=301,L,NC]
-RewriteRule ^computer-science-for-kids/?$ /blog/computer-science-for-kids [R=301,L,NC]
-RewriteRule ^best-games-of-scratch-for-kids/?$ /blog/best-games-of-scratch-for-kids [R=301,L,NC]
-RewriteRule ^coding-bootcamp-for-kids/?$ /blog/coding-bootcamp-for-kids [R=301,L,NC]
-RewriteRule ^why-coding-is-good-investment-for-child/?$ /blog/why-coding-is-good-investment-for-child [R=301,L,NC]
-RewriteRule ^10-designer-buys-that-are-worth-the-investment/?$ /blog/block-programming-for-kids [R=301,L,NC]
-RewriteRule ^our-pick-of-the-coolest-denim-jackets-this-season/?$ /blog/block-programming-tools [R=301,L,NC]
-RewriteRule ^jay-ellis-proves-one-suit-can-work-four-different-ways/?$ /blog/teaching-programming-early-years [R=301,L,NC]
+RewriteRule ^jobs-of-the-next-decade-in-the-era-of-ai/?$ %{ENV:BASE}blog/jobs-of-the-next-decade-in-the-era-of-ai [R=301,L,NC]
+RewriteRule ^teach-coding-to-kids/?$ %{ENV:BASE}blog/teach-coding-to-kids [R=301,L,NC]
+RewriteRule ^coding-from-zero-level/?$ %{ENV:BASE}blog/coding-from-zero-level [R=301,L,NC]
+RewriteRule ^how-to-make-a-game-without-coding/?$ %{ENV:BASE}blog/how-to-make-a-game-without-coding [R=301,L,NC]
+RewriteRule ^coding-and-programming/?$ %{ENV:BASE}blog/coding-and-programming [R=301,L,NC]
+RewriteRule ^how-to-start-coding-for-kids/?$ %{ENV:BASE}blog/how-to-start-coding-for-kids [R=301,L,NC]
+RewriteRule ^how-to-do-coding-in-a-laptop-for-kids/?$ %{ENV:BASE}blog/how-to-do-coding-in-a-laptop-for-kids [R=301,L,NC]
+RewriteRule ^coding-apps-for-kids/?$ %{ENV:BASE}blog/coding-apps-for-kids [R=301,L,NC]
+RewriteRule ^10-html-css-projects-for-beginners/?$ %{ENV:BASE}blog/10-html-css-projects-for-beginners [R=301,L,NC]
+RewriteRule ^graphic-design-for-kids/?$ %{ENV:BASE}blog/graphic-design-for-kids [R=301,L,NC]
+RewriteRule ^games-to-learn-python/?$ %{ENV:BASE}blog/games-to-learn-python [R=301,L,NC]
+RewriteRule ^computer-science-for-kids/?$ %{ENV:BASE}blog/computer-science-for-kids [R=301,L,NC]
+RewriteRule ^best-games-of-scratch-for-kids/?$ %{ENV:BASE}blog/best-games-of-scratch-for-kids [R=301,L,NC]
+RewriteRule ^coding-bootcamp-for-kids/?$ %{ENV:BASE}blog/coding-bootcamp-for-kids [R=301,L,NC]
+RewriteRule ^why-coding-is-good-investment-for-child/?$ %{ENV:BASE}blog/why-coding-is-good-investment-for-child [R=301,L,NC]
+RewriteRule ^10-designer-buys-that-are-worth-the-investment/?$ %{ENV:BASE}blog/block-programming-for-kids [R=301,L,NC]
+RewriteRule ^our-pick-of-the-coolest-denim-jackets-this-season/?$ %{ENV:BASE}blog/block-programming-tools [R=301,L,NC]
+RewriteRule ^jay-ellis-proves-one-suit-can-work-four-different-ways/?$ %{ENV:BASE}blog/teaching-programming-early-years [R=301,L,NC]
 
 # WordPress sitemaps
-RewriteRule ^(wp-sitemap.*|sitemap_index|page-sitemap|post-sitemap|category-sitemap)\.xml$ /sitemap.xml [R=301,L,NC]
+RewriteRule ^(wp-sitemap.*|sitemap_index|page-sitemap|post-sitemap|category-sitemap)\.xml$ %{ENV:BASE}sitemap.xml [R=301,L,NC]
 
-# WordPress query strings (?p=123 etc) -> /
+# WordPress query strings (?p=123 etc) -> base
 RewriteCond %{QUERY_STRING} (^|&)(p|page_id|cat|tag|s)=
-RewriteRule ^$ /? [R=301,L]
+RewriteRule ^$ %{ENV:BASE}? [R=301,L]
 
 # WordPress system addresses: tell Google gone (410)
 RewriteRule ^(wp-admin|wp-includes|wp-content|wp-json|wp-login\.php|xmlrpc\.php)(/.*)?$ - [G,L]
@@ -147,7 +151,7 @@ RewriteRule ^(about|aitep|books|contact|impact|itec-curriculum|lms|monitoring-ev
 RewriteRule ^style-guide/?$ frontend/style-guide.html [END,NC]
 
 # Generic fallback for any other .html page inside frontend/pages/
-RewriteCond %{DOCUMENT_ROOT}/frontend/pages/$1.html -f
+RewriteCond frontend/pages/$1.html -f
 RewriteRule ^([^/]+)/?$ frontend/pages/$1.html [END]
 
 </IfModule>
