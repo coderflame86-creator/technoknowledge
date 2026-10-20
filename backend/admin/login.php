@@ -277,19 +277,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 12px;
             color: #94a3b8;
         }
-        .demo-hint {
-            margin-top: 20px;
-            padding: 12px;
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #475569;
-            text-align: center;
-        }
-        .demo-hint strong {
-            color: #13294B;
-        }
     </style>
 </head>
 <body class="login-page">
@@ -327,17 +314,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit" class="btn-login">Sign In to Dashboard</button>
         </form>
-
-        <?php
-        $config = require dirname(__DIR__) . '/config/config.php';
-        if (($config['app_env'] ?? 'development') === 'development'):
-        ?>
-        <div class="demo-hint">
-            <strong>Development Environment Hint:</strong><br>
-            Username: <code>admin</code> &bull; Password: <code>TechnoAdmin2026!</code><br>
-            <span style="color:#64748b;">(Hidden in production. Remember to change password in Settings.)</span>
-        </div>
-        <?php endif; ?>
 
         <div class="login-footer">
             Technoknowledge (SMC-Pvt) Ltd. &bull; Internal Portal
