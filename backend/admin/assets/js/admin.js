@@ -110,6 +110,10 @@
 
   // Open modal from lead data
   window.openLeadModal = function (data) {
+    if (typeof data === 'string') {
+      try { data = JSON.parse(data); } catch (e) { return; }
+    }
+    if (!data || !data.id) return;
     currentSubmissionId = data.id;
     if (!backdrop) return;
 

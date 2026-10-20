@@ -82,34 +82,44 @@ try {
         'Internal Admin Notes'
     ]);
 
+    // Helper to prevent CSV Formula Injection (CWE-1236)
+    $cleanCsv = function ($val): string {
+        if ($val === null) return '';
+        $str = (string)$val;
+        if ($str !== '' && in_array($str[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+            return "'" . $str;
+        }
+        return $str;
+    };
+
     foreach ($rows as $r) {
         fputcsv($out, [
             $r['id'],
-            $r['created_at'],
-            $r['form_label'],
-            $r['form_type'],
-            $r['status'],
-            $r['name'],
-            $r['whatsapp'],
-            $r['email'],
-            $r['institution'],
-            $r['role'],
-            $r['city'],
-            $r['child_name'],
-            $r['child_age'],
-            $r['courses'],
-            $r['class_type'],
-            $r['program'],
-            $r['interest'],
-            $r['interests'],
-            $r['iam'],
-            $r['subject'],
-            $r['message'],
-            $r['teachers_count'],
-            $r['students_count'],
-            $r['source'],
-            $r['page'],
-            $r['admin_notes']
+            $cleanCsv($r['created_at']),
+            $cleanCsv($r['form_label']),
+            $cleanCsv($r['form_type']),
+            $cleanCsv($r['status']),
+            $cleanCsv($r['name']),
+            $cleanCsv($r['whatsapp']),
+            $cleanCsv($r['email']),
+            $cleanCsv($r['institution']),
+            $cleanCsv($r['role']),
+            $cleanCsv($r['city']),
+            $cleanCsv($r['child_name']),
+            $cleanCsv($r['child_age']),
+            $cleanCsv($r['courses']),
+            $cleanCsv($r['class_type']),
+            $cleanCsv($r['program']),
+            $cleanCsv($r['interest']),
+            $cleanCsv($r['interests']),
+            $cleanCsv($r['iam']),
+            $cleanCsv($r['subject']),
+            $cleanCsv($r['message']),
+            $cleanCsv($r['teachers_count']),
+            $cleanCsv($r['students_count']),
+            $cleanCsv($r['source']),
+            $cleanCsv($r['page']),
+            $cleanCsv($r['admin_notes'])
         ]);
     }
 
@@ -117,6 +127,7 @@ try {
     exit;
 
 } catch (Throwable $e) {
+    error_log('Export error: ' . $e->getMessage());
     http_response_code(500);
-    echo "Export error: " . $e->getMessage();
+    echo "An error occurred while generating the export file.";
 }

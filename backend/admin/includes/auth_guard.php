@@ -5,12 +5,22 @@
 
 declare(strict_types=1);
 
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start([
         'cookie_httponly' => true,
-        'cookie_samesite' => 'Lax'
+        'cookie_samesite' => 'Lax',
+        'cookie_secure'   => $isHttps,
+        'use_strict_mode' => true,
     ]);
 }
+
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 
 // Check session
 if (empty($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {

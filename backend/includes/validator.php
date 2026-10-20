@@ -118,6 +118,17 @@ class FormValidator {
         if ($identifier === '') return;
         $stmt = $db->prepare("INSERT INTO rate_limits (identifier, action, created_at) VALUES (?, 'submit_form', ?)");
         $stmt->execute([$identifier, date('Y-m-d H:i:s')]);
+
+        // Periodic cleanup: purge rate limits older than 24 hours (approx. 5% of writes)
+        if (random_int(1, 20) === 1) {
+            try {
+                $cutoff = date('Y-m-d H:i:s', time() - 86400);
+                $purge = $db->prepare("DELETE FROM rate_limits WHERE created_at < ?");
+                $purge->execute([$cutoff]);
+            } catch (Throwable $e) {
+                // Ignore cleanup errors
+            }
+        }
     }
 
     /**

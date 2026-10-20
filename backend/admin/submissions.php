@@ -199,7 +199,7 @@ $exportQuery = http_build_query([
                                 </span>
                             </td>
                             <td style="text-align: right; white-space: nowrap;">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="openLeadModal(<?= $subJson ?>)" style="margin-right: 4px;">
+                                <button type="button" class="btn btn-sm btn-primary" data-lead="<?= $subJson ?>" onclick="openLeadModal(this.getAttribute('data-lead'))" style="margin-right: 4px;">
                                     View
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="deleteSubmission(<?= (int)$sub['id'] ?>)" style="color: #dc2626; border-color: #fecaca;">

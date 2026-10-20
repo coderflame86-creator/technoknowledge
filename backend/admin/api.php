@@ -71,5 +71,8 @@ try {
 } catch (Throwable $e) {
     error_log('Admin API error: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['ok' => false, 'message' => 'Server error: ' . $e->getMessage()]);
+    $config = require dirname(__DIR__) . '/config/config.php';
+    $isDev = ($config['app_env'] ?? 'development') === 'development';
+    $msg = $isDev ? ('Server error: ' . $e->getMessage()) : 'An internal server error occurred.';
+    echo json_encode(['ok' => false, 'message' => $msg]);
 }

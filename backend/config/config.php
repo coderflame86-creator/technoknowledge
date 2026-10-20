@@ -78,12 +78,14 @@ return [
 
     // Security & Spam Prevention
     'security' => [
-        'allowed_origins'   => [
+        'allowed_origins'   => array_filter(array_unique(array_merge([
             'http://localhost',
             'http://127.0.0.1',
             'https://thetechnoknowledge.com',
             'http://thetechnoknowledge.com',
-        ],
+            'https://www.thetechnoknowledge.com',
+            'http://www.thetechnoknowledge.com',
+        ], env('ALLOWED_ORIGINS') ? array_map('trim', explode(',', env('ALLOWED_ORIGINS'))) : []))),
         'rate_limit_count'  => (int)env('RATE_LIMIT_COUNT', 5),      // max 5 submissions
         'rate_limit_window' => (int)env('RATE_LIMIT_WINDOW', 600),   // within 10 minutes (600s)
         'min_fill_ms'       => (int)env('MIN_FILL_MS', 2500),        // < 2.5s = bot

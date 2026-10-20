@@ -34,6 +34,11 @@ RewriteRule ^(.*)$ - [E=BASE:%1]
 RewriteRule ^backend(/.*)?$ - [L]
 
 # ---------------------------------------------------------
+# Block direct access to internal server directories & CLI scripts
+# ---------------------------------------------------------
+RewriteRule ^(scripts|docs|prompts|data|blog-generator)(/.*)?$ - [F,L,NC]
+
+# ---------------------------------------------------------
 # 3. STATIC ASSETS & SYSTEM FILES -> FRONTEND/
 # ---------------------------------------------------------
 RewriteRule ^(assets|css|js)/(.*)$ frontend/$1/$2 [L,QSA]
@@ -187,6 +192,6 @@ RewriteRule ^([^/]+)/?$ frontend/pages/$1.html [END]
 </IfModule>
 
 # Deny access to sensitive files
-<FilesMatch "(^\.|\.(env|git|sqlite|db|log|ini|json|sql|py|mjs|sh|md)$)">
+<FilesMatch "(^\.|\.(env|git|sqlite|db|log|ini|json|sql|py|mjs|sh|md|bak|yml|yaml|swp|docx)$)">
   Require all denied
 </FilesMatch>

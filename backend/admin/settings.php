@@ -33,6 +33,8 @@ try {
 
             if (empty($name) || empty($email)) {
                 $errorMsg = 'Name and email cannot be empty.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errorMsg = 'Please enter a valid email address.';
             } else {
                 // If changing password
                 if (!empty($newPass)) {

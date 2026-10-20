@@ -175,7 +175,7 @@ try {
                                 </span>
                             </td>
                             <td style="text-align: right; white-space: nowrap;">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="openLeadModal(<?= $subJson ?>)">
+                                <button type="button" class="btn btn-sm btn-primary" data-lead="<?= $subJson ?>" onclick="openLeadModal(this.getAttribute('data-lead'))">
                                     View Details
                                 </button>
                             </td>

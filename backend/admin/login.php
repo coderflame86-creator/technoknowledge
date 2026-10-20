@@ -5,12 +5,22 @@
 
 declare(strict_types=1);
 
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start([
         'cookie_httponly' => true,
-        'cookie_samesite' => 'Lax'
+        'cookie_samesite' => 'Lax',
+        'cookie_secure'   => $isHttps,
+        'use_strict_mode' => true,
     ]);
 }
+
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 
 if (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     header('Location: index.php');
@@ -33,6 +43,15 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+// Client IP for brute force defense
+$clientIp = $_SERVER['HTTP_CF_CONNECTING_IP']
+    ?? $_SERVER['HTTP_X_FORWARDED_FOR']
+    ?? $_SERVER['REMOTE_ADDR']
+    ?? '127.0.0.1';
+if (str_contains($clientIp, ',')) {
+    $clientIp = trim(explode(',', $clientIp)[0]);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $submittedToken = $_POST['csrf_token'] ?? '';
     if (!hash_equals($_SESSION['csrf_token'], $submittedToken)) {
@@ -41,26 +60,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = trim((string)($_POST['username'] ?? ''));
         $password = (string)($_POST['password'] ?? '');
 
-        // Brute-force check (5 failed attempts in 15 mins)
-        $_SESSION['login_attempts'] = $_SESSION['login_attempts'] ?? 0;
-        $_SESSION['last_attempt_time'] = $_SESSION['last_attempt_time'] ?? time();
+        try {
+            $db = Database::getConnection();
+            $since = date('Y-m-d H:i:s', time() - 900);
 
-        if ($_SESSION['login_attempts'] >= 5 && (time() - $_SESSION['last_attempt_time'] < 900)) {
-            $remaining = ceil((900 - (time() - $_SESSION['last_attempt_time'])) / 60);
-            $error = "Too many failed login attempts. Please wait $remaining minutes before trying again.";
-        } elseif (empty($username) || empty($password)) {
-            $error = 'Please enter both username and password.';
-        } else {
-            try {
-                $db = Database::getConnection();
+            // DB-backed brute-force check: check failed attempts for this IP and username
+            $ipCheck = $db->prepare("SELECT COUNT(*) FROM rate_limits WHERE identifier = ? AND action = 'admin_login_failed' AND created_at >= ?");
+            $ipCheck->execute([$clientIp, $since]);
+            $failedAttempts = (int)$ipCheck->fetchColumn();
+
+            // Session check fallback
+            $_SESSION['login_attempts'] = $_SESSION['login_attempts'] ?? 0;
+            $_SESSION['last_attempt_time'] = $_SESSION['last_attempt_time'] ?? time();
+
+            if ($failedAttempts >= 5 || ($_SESSION['login_attempts'] >= 5 && (time() - $_SESSION['last_attempt_time'] < 900))) {
+                $error = "Too many failed login attempts. Please wait 15 minutes before trying again.";
+            } elseif (empty($username) || empty($password)) {
+                $error = 'Please enter both username and password.';
+            } else {
                 $stmt = $db->prepare("SELECT * FROM admins WHERE username = ? LIMIT 1");
                 $stmt->execute([$username]);
                 $admin = $stmt->fetch();
 
                 if ($admin && password_verify($password, $admin['password_hash'])) {
-                    // Reset attempts
+                    // Reset attempts on success
                     $_SESSION['login_attempts'] = 0;
                     session_regenerate_id(true);
+
+                    // Clear IP rate limit records
+                    $clr = $db->prepare("DELETE FROM rate_limits WHERE identifier = ? AND action = 'admin_login_failed'");
+                    $clr->execute([$clientIp]);
 
                     $_SESSION['admin_logged_in'] = true;
                     $_SESSION['admin_id'] = (int)$admin['id'];
@@ -73,18 +102,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $up = $db->prepare("UPDATE admins SET last_login = ? WHERE id = ?");
                     $up->execute([date('Y-m-d H:i:s'), $admin['id']]);
 
-                    $redirect = !empty($_GET['redirect']) ? urldecode($_GET['redirect']) : 'index.php';
+                    // Safe Open Redirect validation
+                    $redirect = 'index.php';
+                    if (!empty($_GET['redirect'])) {
+                        $candidate = urldecode($_GET['redirect']);
+                        // Disallow external schemes, protocol-relative '//', backslashes, or directory traversal
+                        if (!preg_match('#^[a-zA-Z][a-zA-Z0-9+.-]*://#', $candidate)
+                            && !str_starts_with($candidate, '//')
+                            && !str_contains($candidate, '\\')
+                            && !str_contains($candidate, '..')) {
+                            // Only allow relative internal paths
+                            if (preg_match('#^[a-zA-Z0-9_\-/\.\?=&]+$#', $candidate)) {
+                                $redirect = $candidate;
+                            }
+                        }
+                    }
                     header('Location: ' . $redirect);
                     exit;
                 } else {
                     $_SESSION['login_attempts']++;
                     $_SESSION['last_attempt_time'] = time();
+                    // Log failed attempt in DB
+                    $logFail = $db->prepare("INSERT INTO rate_limits (identifier, action, created_at) VALUES (?, 'admin_login_failed', ?)");
+                    $logFail->execute([$clientIp, date('Y-m-d H:i:s')]);
                     $error = 'Invalid username or password.';
                 }
-            } catch (Throwable $e) {
-                error_log('Login DB error: ' . $e->getMessage());
-                $error = 'A database error occurred. Please check server configuration.';
             }
+        } catch (Throwable $e) {
+            error_log('Login DB error: ' . $e->getMessage());
+            $error = 'A database error occurred. Please check server configuration.';
         }
     }
 }
@@ -282,11 +328,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="btn-login">Sign In to Dashboard</button>
         </form>
 
+        <?php
+        $config = require dirname(__DIR__) . '/config/config.php';
+        if (($config['app_env'] ?? 'development') === 'development'):
+        ?>
         <div class="demo-hint">
-            <strong>Default Credentials:</strong><br>
+            <strong>Development Environment Hint:</strong><br>
             Username: <code>admin</code> &bull; Password: <code>TechnoAdmin2026!</code><br>
-            <span style="color:#64748b;">(You can change your password anytime in Settings)</span>
+            <span style="color:#64748b;">(Hidden in production. Remember to change password in Settings.)</span>
         </div>
+        <?php endif; ?>
 
         <div class="login-footer">
             Technoknowledge (SMC-Pvt) Ltd. &bull; Internal Portal

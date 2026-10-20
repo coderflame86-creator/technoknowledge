@@ -1,11 +1,21 @@
-# Protect sensitive files in backend
-<FilesMatch "^\.(env|git|htaccess)">
-    Require all denied
-</FilesMatch>
-
-<FilesMatch "\.(sqlite|db|log|ini|json|sql)$">
-    Require all denied
-</FilesMatch>
-
+# Protect sensitive files and directories in backend
 Options -Indexes
 DirectoryIndex index.php
+
+# Block direct access to sensitive internal backend directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(config|includes|data|src|tests)/ - [F,L,NC]
+</IfModule>
+
+# Deny access to sensitive file extensions
+<FilesMatch "(^\.|\.(env|git|sqlite|db|log|ini|json|sql|bak|sh|yml|yaml|md)$)">
+    Require all denied
+</FilesMatch>
+
+# Security response headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -13,9 +13,10 @@ class FormMailer {
             return false;
         }
 
-        $formTitle = $submission['form_label'] ?? 'New Form Submission';
-        $name = $submission['name'] ?: 'Visitor';
+        $formTitle = str_replace(["\r", "\n"], '', (string)($submission['form_label'] ?? 'New Form Submission'));
+        $name = str_replace(["\r", "\n"], '', (string)($submission['name'] ?: 'Visitor'));
         $subject = "[$formTitle] New lead from " . $name;
+        $subject = str_replace(["\r", "\n"], '', $subject);
 
         $wa = FormValidator::formatWhatsApp($submission['whatsapp'] ?? '');
         $waUrl = $wa['wa_url'];
@@ -105,17 +106,29 @@ class FormMailer {
 </body>
 </html>';
 
+        $fromName = str_replace(["\r", "\n", '"'], '', (string)($config['mail']['from_name'] ?? 'Technoknowledge'));
+        $fromEmail = str_replace(["\r", "\n"], '', (string)($config['mail']['from_email'] ?? 'website@thetechnoknowledge.com'));
+        $replyTo = $fromEmail;
+        if (!empty($submission['email'])) {
+            $userEmail = str_replace(["\r", "\n"], '', (string)$submission['email']);
+            if (filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
+                $replyTo = $userEmail;
+            }
+        }
+
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=utf-8',
-            'From: ' . $config['mail']['from_name'] . ' <' . $config['mail']['from_email'] . '>',
-            'Reply-To: ' . (!empty($submission['email']) ? $submission['email'] : $config['mail']['from_email']),
+            'From: ' . $fromName . ' <' . $fromEmail . '>',
+            'Reply-To: ' . $replyTo,
             'X-Mailer: PHP/' . phpversion()
         ];
 
+        $cleanTo = str_replace(["\r", "\n"], '', $to);
+
         // Send via mail() or fallback
         try {
-            return @mail($to, $subject, $htmlBody, implode("\r\n", $headers));
+            return @mail($cleanTo, $subject, $htmlBody, implode("\r\n", $headers));
         } catch (Throwable $e) {
             error_log('Failed to send lead email: ' . $e->getMessage());
             return false;

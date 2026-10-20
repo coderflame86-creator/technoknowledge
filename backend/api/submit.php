@@ -7,15 +7,45 @@
 
 declare(strict_types=1);
 
-// Set headers
+// Security & JSON headers
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 
-// Handle CORS
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-header("Access-Control-Allow-Origin: $origin");
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
-header('Access-Control-Allow-Credentials: true');
+require_once dirname(__DIR__) . '/config/config.php';
+require_once dirname(__DIR__) . '/config/database.php';
+require_once dirname(__DIR__) . '/includes/validator.php';
+require_once dirname(__DIR__) . '/includes/mailer.php';
+
+$config = require dirname(__DIR__) . '/config/config.php';
+
+// Handle CORS safely
+$rawOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigins = $config['security']['allowed_origins'] ?? [];
+
+if (!empty($rawOrigin)) {
+    $parsedOrigin = rtrim($rawOrigin, '/');
+    $isAllowed = false;
+    foreach ($allowedOrigins as $allowed) {
+        if (rtrim($allowed, '/') === $parsedOrigin) {
+            $isAllowed = true;
+            break;
+        }
+    }
+    if ($isAllowed) {
+        header("Access-Control-Allow-Origin: $parsedOrigin");
+        header('Access-Control-Allow-Methods: POST, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
+        header('Vary: Origin');
+    } else {
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'message' => 'Origin not allowed by CORS policy.']);
+            exit;
+        }
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -28,13 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['ok' => false, 'message' => 'Method not allowed. Only POST is accepted.']);
     exit;
 }
-
-require_once dirname(__DIR__) . '/config/config.php';
-require_once dirname(__DIR__) . '/config/database.php';
-require_once dirname(__DIR__) . '/includes/validator.php';
-require_once dirname(__DIR__) . '/includes/mailer.php';
-
-$config = require dirname(__DIR__) . '/config/config.php';
 
 try {
     $db = Database::getConnection();
