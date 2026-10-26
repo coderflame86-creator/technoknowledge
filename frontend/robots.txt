@@ -2,5 +2,6 @@
 User-agent: *
 Allow: /
 Disallow: /components/
+Disallow: /backend/
 
 Sitemap: https://thetechnoknowledge.com/sitemap.xml

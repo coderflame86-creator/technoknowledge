@@ -17,10 +17,11 @@ if (session_status() === PHP_SESSION_NONE) {
     ]);
 }
 
-// Security headers
+// Security & SEO headers (strictly block indexing across all search engines)
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: strict-origin-when-cross-origin');
+header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet', true);
 
 if (!empty($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     header('Location: index.php');
@@ -50,6 +51,22 @@ $clientIp = $_SERVER['HTTP_CF_CONNECTING_IP']
     ?? '127.0.0.1';
 if (str_contains($clientIp, ',')) {
     $clientIp = trim(explode(',', $clientIp)[0]);
+}
+
+// Check IP restriction if configured in .env
+$config = require dirname(__DIR__) . '/config/config.php';
+$rawAllowed = trim((string)($config['security']['admin_allowed_ips'] ?? ''));
+if ($rawAllowed !== '') {
+    $allowedIps = array_filter(array_map('trim', explode(',', $rawAllowed)));
+    $allowedIps[] = '127.0.0.1';
+    $allowedIps[] = '::1';
+    if (!in_array($clientIp, $allowedIps, true)) {
+        http_response_code(403);
+        header('Content-Type: text/html; charset=utf-8');
+        header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet', true);
+        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex, nofollow"><title>403 Access Restricted</title><style>body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:center;padding:60px 20px;background:#f8f9fa;color:#13294B;}h1{font-size:28px;color:#c92a2a;margin-bottom:12px;}p{font-size:16px;color:#495057;}</style></head><body><h1>403 Access Restricted</h1><p>Your IP address (' . htmlspecialchars($clientIp) . ') is not authorized to access this administration portal.</p></body></html>';
+        exit;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -140,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
     <title>Admin Login • Technoknowledge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

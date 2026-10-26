@@ -86,10 +86,13 @@ return [
             'https://www.thetechnoknowledge.com',
             'http://www.thetechnoknowledge.com',
         ], env('ALLOWED_ORIGINS') ? array_map('trim', explode(',', env('ALLOWED_ORIGINS'))) : []))),
-        'rate_limit_count'  => (int)env('RATE_LIMIT_COUNT', 5),      // max 5 submissions
-        'rate_limit_window' => (int)env('RATE_LIMIT_WINDOW', 600),   // within 10 minutes (600s)
-        'min_fill_ms'       => (int)env('MIN_FILL_MS', 2500),        // < 2.5s = bot
-        'session_lifetime'  => 86400 * 7,                            // 7 days
+        'rate_limit_count'      => (int)env('RATE_LIMIT_COUNT', 5),      // max 5 submissions
+        'rate_limit_window'     => (int)env('RATE_LIMIT_WINDOW', 600),   // within 10 minutes (600s)
+        'api_rate_limit_count'  => (int)env('API_RATE_LIMIT_COUNT', 10), // max 10 submit requests per minute
+        'api_rate_limit_window' => (int)env('API_RATE_LIMIT_WINDOW', 60),// 60s window
+        'min_fill_ms'           => (int)env('MIN_FILL_MS', 2500),        // < 2.5s = bot
+        'admin_allowed_ips'     => env('ADMIN_ALLOWED_IPS', ''),         // Comma-separated allowed IPs for /backend/admin/
+        'session_lifetime'      => 86400 * 7,                            // 7 days
     ],
 
     // Notification Email & WhatsApp

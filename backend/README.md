@@ -65,9 +65,12 @@ All frontend forms post through `frontend/js/api.js` to `backend/api/submit.php`
 - `Contact Messages` (`contact`)
 
 ### Built-in Protection & Security:
+- **Search Engine Blocking (noindex):** All `/backend/admin/` pages and endpoints enforce `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet` and `<meta name="robots">`. The root `robots.txt` also explicitly disallows `/backend/`.
+- **IP Access Limits:** Restrict admin access to authorized static IP addresses via `ADMIN_ALLOWED_IPS` in `backend/.env` or via server directives in `backend/admin/.htaccess`.
+- **API Request Rate Limiting:** Enforces rapid request throttling (default: 10 requests / 60 seconds per IP) returning standard HTTP `429 Too Many Requests` with `Retry-After` and `X-RateLimit-*` headers before processing payloads.
 - **Honeypot Trap:** Rejects automated bot submissions filling hidden fields (`hp-field`, `hp`).
 - **Speed Check:** Rejects submissions completed faster than 2,500ms (`elapsed` check).
-- **Rate Limiting:** Maximum 5 submissions per 10 minutes per IP and phone number.
+- **Submission Frequency Limit:** Maximum 5 completed submissions per 10 minutes per IP and phone number.
 - **SQL Injection Prevention:** 100% PDO prepared statements.
 - **XSS Sanitization:** All text inputs stripped of harmful tags before database entry.
 

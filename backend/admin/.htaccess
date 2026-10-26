@@ -1,0 +1,42 @@
+# =========================================================
+# Technoknowledge Backend - Admin Portal Access Control & Security
+# =========================================================
+
+Options -Indexes
+DirectoryIndex index.php
+
+# Block indexing across all search engines for the admin portal
+<IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Block direct access to internal admin includes and assets directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^includes/ - [F,L,NC]
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "(^\.|\.(env|sql|sqlite|db|log|bak|sh|md)$)">
+    Require all denied
+</FilesMatch>
+
+# =========================================================
+# IP Restriction (Access Limits)
+# =========================================================
+# By default, access is guarded by secure session authentication,
+# CSRF protection, and brute-force lockouts.
+#
+# If you want to restrict the admin portal strictly to specific IP
+# addresses (e.g. office, home, or VPN IP), uncomment the block below
+# and add your static IP addresses:
+#
+# <RequireAny>
+#     Require ip 127.0.0.1
+#     Require ip ::1
+#     # Require ip 203.0.113.10
+#     # Require ip 198.51.100.0/24
+# </RequireAny>

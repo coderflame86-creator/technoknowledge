@@ -112,6 +112,46 @@ class FormValidator {
     }
 
     /**
+     * Check rapid request rate limit (e.g. max 10 requests per minute)
+     */
+    public static function checkIpRateLimit(string $ip, PDO $db, array $config): array {
+        $window = (int)($config['security']['api_rate_limit_window'] ?? 60);
+        $maxCount = (int)($config['security']['api_rate_limit_count'] ?? 10);
+        $since = date('Y-m-d H:i:s', time() - $window);
+
+        $stmt = $db->prepare("SELECT COUNT(*) FROM rate_limits WHERE identifier = ? AND action = 'submit_attempt' AND created_at >= ?");
+        $stmt->execute([$ip, $since]);
+        $count = (int)$stmt->fetchColumn();
+
+        if ($count >= $maxCount) {
+            return [
+                'allowed'   => false,
+                'limit'     => $maxCount,
+                'remaining' => 0,
+                'retry'     => $window,
+                'message'   => 'Too many requests. Please wait a minute before trying again.'
+            ];
+        }
+
+        return [
+            'allowed'   => true,
+            'limit'     => $maxCount,
+            'remaining' => max(0, $maxCount - $count - 1),
+            'retry'     => 0,
+            'message'   => ''
+        ];
+    }
+
+    /**
+     * Log submit attempt for rate limiting
+     */
+    public static function logAttempt(string $ip, PDO $db): void {
+        if ($ip === '') return;
+        $stmt = $db->prepare("INSERT INTO rate_limits (identifier, action, created_at) VALUES (?, 'submit_attempt', ?)");
+        $stmt->execute([$ip, date('Y-m-d H:i:s')]);
+    }
+
+    /**
      * Record rate limit identifier
      */
     public static function logRateLimit(string $identifier, PDO $db): void {

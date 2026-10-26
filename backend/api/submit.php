@@ -100,7 +100,22 @@ if (str_contains($ip, ',')) {
 }
 $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
-// Check anti-spam and honeypot
+// Check rapid API rate limiting by IP
+$rateStatus = FormValidator::checkIpRateLimit($ip, $db, $config);
+header('X-RateLimit-Limit: ' . $rateStatus['limit']);
+header('X-RateLimit-Remaining: ' . $rateStatus['remaining']);
+
+if (!$rateStatus['allowed']) {
+    header('Retry-After: ' . $rateStatus['retry']);
+    http_response_code(429);
+    echo json_encode(['ok' => false, 'message' => $rateStatus['message']]);
+    exit;
+}
+
+// Log submit attempt for IP rate limiting
+FormValidator::logAttempt($ip, $db);
+
+// Check anti-spam, honeypot, and submission limits
 $spamError = FormValidator::checkSpam($data, $ip, $db, $config);
 if ($spamError !== null) {
     http_response_code(429);
