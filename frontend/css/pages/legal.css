@@ -4,9 +4,9 @@
    ========================================================= */
 .legal-hero { align-items: start; }
 .legal-summary { padding: 24px 26px; border-radius: var(--radius-lg); background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14); }
-.legal-summary h2 { color: #fff; font-size: var(--fs-h4); }
+.legal-summary h2 { color: var(--white); font-size: var(--fs-h4); }
 .legal-summary ul { list-style: none; padding: 0; margin-top: 14px; display: grid; gap: 10px; }
-.legal-summary li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; color: #DCE3EE; font-size: var(--fs-sm); line-height: 1.5; }
+.legal-summary li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; color: var(--c-dce3ee); font-size: var(--fs-sm); line-height: 1.5; }
 .legal-summary li span { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--navy); margin-top: 1px; }
 .legal-summary svg { width: 14px; height: 14px; }
 

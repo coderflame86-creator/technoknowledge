@@ -72,10 +72,10 @@ a:hover { color: var(--navy); }
 }
 .skip-link {
   position: absolute; left: 16px; top: -60px; z-index: 1000;
-  background: var(--navy); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm);
+  background: var(--navy); color: var(--white); padding: 10px 16px; border-radius: var(--radius-sm);
   font-weight: 700; text-decoration: none; transition: top var(--t-fast);
 }
-.skip-link:focus { top: 12px; color: #fff; }
+.skip-link:focus { top: 12px; color: var(--white); }
 
 /* ---- text utilities ---- */
 .text-center { text-align: center; }

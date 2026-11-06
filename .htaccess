@@ -36,7 +36,8 @@ RewriteRule ^backend(/.*)?$ - [L]
 # ---------------------------------------------------------
 # Block direct access to internal server directories & CLI scripts
 # ---------------------------------------------------------
-RewriteRule ^(scripts|docs|prompts|data|blog-generator)(/.*)?$ - [F,L,NC]
+RewriteRule ^(scripts|docs|prompts|data|blog-generator|dist|Claud[\ ]Instructions|instructions[\ ]for[\ ]developer|TK[\ ]Logo)(/.*)?$ - [F,L,NC]
+RewriteRule ^blog/(posts|templates)(/.*)?$ - [F,L,NC]
 
 # ---------------------------------------------------------
 # 3. STATIC ASSETS & SYSTEM FILES -> FRONTEND/
@@ -47,8 +48,6 @@ RewriteRule ^(robots\.txt|sitemap\.xml|favicon\.ico|404\.html)$ frontend/$1 [L]
 # ---------------------------------------------------------
 # 4. REMOVE DIRECT /frontend/ OR /pages/ OR .html ACCESS (301)
 # ---------------------------------------------------------
-# 4. REMOVE DIRECT /frontend/ OR /pages/ OR .html ACCESS (301)
-# ---------------------------------------------------------
 # Only redirect initial external requests, never internal rewrites
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^frontend/index\.html$ %{ENV:BASE} [R=301,L,NC]
@@ -56,6 +55,8 @@ RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^frontend/?$ %{ENV:BASE} [R=301,L,NC]
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteRule ^index\.html$ %{ENV:BASE} [R=301,L,NC]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^index\.php$ %{ENV:BASE} [R=301,L,NC]
 
 # Redirect direct /pages/ or /frontend/pages/ for blog articles -> blog/<slug>
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
@@ -90,6 +91,8 @@ RewriteRule ^coding-camps-for-kids/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
 RewriteRule ^school-bootcamps/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
 RewriteRule ^robotics-camp/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
 RewriteRule ^registration/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^techno-camp/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
+RewriteRule ^course-registration/?$ %{ENV:BASE}techno-camps [R=301,L,NC]
 RewriteRule ^early-age-curriculum/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
 RewriteRule ^digitized-curriculum/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
 RewriteRule ^teacher-training/?$ %{ENV:BASE}itec-curriculum [R=301,L,NC]
